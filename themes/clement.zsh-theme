@@ -1,4 +1,4 @@
-# la table des couleurs
+# Complete color table
 	fg_black=%{$'\e[0;30m'%}
 	fg_red=%{$'\e[0;31m'%}
 	fg_green=%{$'\e[0;32m'%}
@@ -16,7 +16,7 @@
 	fg_pink=%{$'\e[1;35m'%}
 	fg_lcyan=%{$'\e[1;36m'%}
 
-#Text Background Colors
+# Text Background Colors
 	bg_red=%{$'\e[0;41m'%}
 	bg_green=%{$'\e[0;42m'%}
 	bg_brown=%{$'\e[0;43m'%}
@@ -25,7 +25,7 @@
 	bg_cyan=%{$'\e[0;46m'%}
 	bg_gray=%{$'\e[0;47m'%}
 
-#Attributes
+# Attributes
 	at_normal=%{$'\e[0m'%}
 	at_bold=%{$'\e[1m'%}
 	at_italics=%{$'\e[3m'%}
@@ -42,7 +42,7 @@
 	at_reverseoff=%{$'\e[27m'%}
 	at_strikeoff=%{$'\e[29m'%}
 
-#colors designation
+# colors designation
 #a     black
 #b     red
 #c     green
@@ -62,7 +62,7 @@
 #x     default foreground or background
 
 
-#order
+# order
 #1.   directory
 #2.   symbolic link
 #3.   socket
@@ -86,8 +86,8 @@ colors
 setopt PROMPT_SUBST
 
 # Autoload zsh functions.
-fpath=(~/.oh-my-zsh/custom/plugins $fpath)
-autoload -U ~/.oh-my-zsh/custom/plugins/*(:t)
+fpath=(~/.oh-my-zsh/plugins/clement-git $fpath)
+autoload -U ~/.oh-my-zsh/plugins/clement-git/*(:t)
 
 # Enable auto-execution of functions.
 typeset -ga preexec_functions
@@ -112,4 +112,3 @@ ${fg_brown}${fg_white}[${fg_cyan}%T${fg_white}]:"
 
 #zle -N zle-line-init
 #zle -N zle-keymap-select
-
