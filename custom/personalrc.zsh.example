@@ -22,9 +22,6 @@ eval "$(rbenv init - zsh)"
 # Vagrant path
 export PATH="/opt/vagrant/bin:$PATH"
 
-# VMware app Catalyst
-export PATH="/opt/vmware/appcatalyst/bin/:$PATH"
-
 # Kubernete path
 export PATH="/Users/clement/Documents/kubernetes/platforms/darwin/amd64:$PATH"
 
