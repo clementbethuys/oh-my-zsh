@@ -4,9 +4,15 @@ export EDITOR=vim
 # Do not share history between terminals
 unsetopt share_history
 
+# Completely disable history for security
+export HISTFILE=/dev/null
+
 # Google Cloud command line tool settings
-source '/Users/clement/.gcloud/google-cloud-sdk/path.zsh.inc'
-source '/Users/clement/.gcloud/google-cloud-sdk/completion.zsh.inc'
+source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
+source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
+
+# Personal Binaries
+export PATH="$HOME/.bin:$PATH"
 
 # Brew settings
 export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
@@ -22,18 +28,19 @@ eval "$(rbenv init - zsh)"
 # Vagrant path
 export PATH="/opt/vagrant/bin:$PATH"
 
+# Functionnal time command
+disable -r time
+alias time='time -p '
+
 # Kubernete path
-export PATH="/Users/clement/Documents/kubernetes/platforms/darwin/amd64:$PATH"
+export PATH="$HOME/Documents/kubernetes/platforms/darwin/amd64:$PATH"
+
+# Yarn path
+export PATH="$HOME/.yarn/bin:$PATH"
 
 # Virtualenv path
-export WORKON_HOME=$HOME/.virtualenvs
+export WORKON_HOME="$HOME/.virtualenvs"
 source /usr/local/bin/virtualenvwrapper.sh
-
-# Chef client with Vagrant
-export chef_server_url=''
-export validation_client_name=''
-export validation_key=''
-export cookbook_path=''
 
 # Lifehack alias
 alias digg="dig +short +noshort"
@@ -44,11 +51,8 @@ alias encrypt='knife file encrypt -F json --secret-file SOMEWHERE'
 alias decrypt='knife file decrypt -F json --secret-file SOMEWHERE'
 
 # Alias related to directories
-alias repo="cd /Users/clement/Documents/Repository/chef_recipes"
-alias dental="cd /Users/clement/Documents/Repository/dm_recipes"
-alias devops="cd /Users/clement/Documents/Repository/devops"
-alias repo='cd /Users/clement/Documents/Repository/chef_recipes'
-alias tmp='cd /Users/clement/Documents/Repository/tmp'
+alias repo="cd $HOME/Documents/Repository/"
+alias tmp="cd $HOME/Documents/Repository/tmp"
 
 # Capstone import
 export DYLD_LIBRARY_PATH=/usr/local/opt/capstone/lib/:$DYLD_LIBRARY_PATH
@@ -60,27 +64,9 @@ alias urldecode='python -c "import sys, urllib as ul; \
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
 
-# Alias for aws-keychain
-alias h42='aws-keychain exec h42'
-alias h43='aws-keychain exec h43'
-alias h44='aws-keychain exec h44'
-alias p='aws-keychain exec p'
-
 # For Check DK
 export PATH=/opt/chefdk/bin:$PATH
 alias workchef='eval "$(chef shell-init bash)"'
-
-# Automatically run workchef for my chef directories
-cd () {
-  builtin cd "$@"
-  current_dir=$PWD
-    case $current_dir in
-    /Users/clement/Documents/Repository/chef_recipes/* ) workchef ;;
-    /Users/clement/Documents/Repository/chef_recipes ) workchef ;;
-    /Users/clement/Documents/Repository/dm_recipes/* ) workchef ;;
-    /Users/clement/Documents/Repository/dm_recipes ) workchef ;;
-  esac
-}
 
 # To create temporary container
 alias drun='docker run --rm -i -t'
@@ -88,12 +74,28 @@ alias drun='docker run --rm -i -t'
 # Go related settings
 export GO15VENDOREXPERIMENT=1
 export GOROOT=`go env GOROOT`
-export GOPATH="/Users/clement/Documents/go"
+export GOPATH="$HOME/Documents/go"
 export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
-alias gowork='/Users/clement/Documents/go/src'
+alias gowork='/Documents/go/src'
 
 # To move in go repos quickly
 gocd () { cd `go list -f '{{.Dir}}' $1` }
 
 # Fix bug between youcompleteme and brew
 export DYLD_FORCE_FLAT_NAMESPACE=1
+
+# Colorize man page
+man() {
+    env \
+        LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+        LESS_TERMCAP_md=$(printf "\e[1;31m") \
+        LESS_TERMCAP_me=$(printf "\e[0m") \
+        LESS_TERMCAP_se=$(printf "\e[0m") \
+        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+        LESS_TERMCAP_ue=$(printf "\e[0m") \
+        LESS_TERMCAP_us=$(printf "\e[1;32m") \
+        man "$@"
+}
+
+# Import private settings
+source $(dirname ${(%):-%x})/personal-extras.zsh
