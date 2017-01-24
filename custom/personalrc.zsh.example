@@ -1,6 +1,10 @@
 # Export editor globally
 export EDITOR=vim
 
+# Configure locale
+export LANG=fr_FR.UTF-8
+export LC_ALL=fr_FR.UTF-8
+
 # Do not share history between terminals
 unsetopt share_history
 
@@ -17,6 +21,10 @@ export PATH="$HOME/.bin:$PATH"
 # Brew settings
 export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN='TODO'
+export HOMEBREW_NO_ANALYTICS=1
+
+# Rust settings
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # Java settings
 export JAVA_HOME=$(/usr/libexec/java_home)
@@ -52,6 +60,7 @@ alias decrypt='knife file decrypt -F json --secret-file SOMEWHERE'
 
 # Alias related to directories
 alias repo="cd $HOME/Documents/Repository/"
+alias dns="cd $HOME/Documents/Repository/devops/dns-proxy/simple"
 alias tmp="cd $HOME/Documents/Repository/tmp"
 
 # Capstone import
