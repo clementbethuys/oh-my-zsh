@@ -50,7 +50,11 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export WORKON_HOME="$HOME/.virtualenvs"
 source /usr/local/bin/virtualenvwrapper.sh
 
+# Syntax highlighting for console input (very slow)
+# source /Users/clement/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 # Lifehack alias
+alias history="fc -il"
 alias digg="dig +short +noshort"
 alias listport='lsof -i -P | grep -i "listen"'
 alias sshec2="ssh -l ubuntu "
