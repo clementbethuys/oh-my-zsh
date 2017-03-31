@@ -62,10 +62,19 @@ alias moshec2="mosh --ssh='ssh -l ubuntu'"
 alias encrypt='knife file encrypt -F json --secret-file SOMEWHERE'
 alias decrypt='knife file decrypt -F json --secret-file SOMEWHERE'
 
-# Alias related to directories
-alias repo="cd $HOME/Documents/Repository/"
-alias dns="cd $HOME/Documents/Repository/devops/dns-proxy/simple"
-alias tmp="cd $HOME/Documents/Repository/tmp"
+# Git alias
+export open="open" # program to open http
+alias gurl="git remote get-url origin | sed 's/git@\(.*\):\(.*\).git/https:\/\/\1\/\2/'"
+alias grepo="git remote get-url origin | sed 's/git@\(.*\):\(.*\).git/\2/'"
+alias gmr='${open} "`gurl`/merge_requests/new?merge_request%5Bsource_branch%5D=`git rev-parse --abbrev-ref HEAD`&merge_request%5Btarget_branch%5D=master"'
+alias gcmp='${open} "`gurl`/compare/master...`git rev-parse --abbrev-ref HEAD`"'
+alias lg='git lg'
+alias gbda='git branch --no-color --merged | command grep -vE "^(\*|\s*(master|develop|dev|prod)\s*$)" | command xargs -n 1 git branch -d'
+alias gclean='gfa && gbda'
+alias glg="git glg"
+alias gntw='${open} "`gurl`/network/`git rev-parse --abbrev-ref HEAD`"'
+alias gnis='${open} "`gurl`/issues/new"'
+alias gboard='${open} "`gurl`/boards"'
 
 # Capstone import
 export DYLD_LIBRARY_PATH=/usr/local/opt/capstone/lib/:$DYLD_LIBRARY_PATH
