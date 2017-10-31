@@ -1,25 +1,16 @@
-if [ -n "$__CURRENT_GIT_BRANCH" ]; then
+if [ -n "$GIT_BRANCH" ]; then
     local s="("
-    s+="$__CURRENT_GIT_BRANCH"
-    case "$__CURRENT_GIT_BRANCH_STATUS" in
-        ahead)
+    s+="$GIT_BRANCH"
+		if [ "$GIT_AHEAD" -ne 0 ]; then
         s+="↑"
-        ;;
-        diverged)
-        s+="↕"
-        ;;
-        todate)
-        s+=""
-        ;;
-        behind)
+		fi
+		if [ "$GIT_BEHIND" -ne 0 ]; then
         s+="↓"
-        ;;
-    esac
-    if [ -n "$__CURRENT_GIT_BRANCH_IS_DIRTY" ]; then
+		fi
+    if [ "$GIT_CHANGED" -ne 0 ]; then
         s+="⚡"
     fi
     s+=")"
- 
     printf "%s%s" "%{${fg[yellow]}%}" $s
 fi
 
