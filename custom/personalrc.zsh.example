@@ -53,6 +53,9 @@ source /usr/local/bin/virtualenvwrapper.sh
 # Syntax highlighting for console input (very slow)
 # source /Users/clement/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# SSH alias for cisco
+alias ssho="ssh -o KexAlgorithms=diffie-hellman-group1-sha1 -o Ciphers=aes256-cbc"
+
 # Lifehack alias
 alias history="fc -il"
 alias digg="dig +short +noshort"
