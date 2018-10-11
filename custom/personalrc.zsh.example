@@ -9,14 +9,19 @@ export LC_ALL=fr_FR.UTF-8
 unsetopt share_history
 
 # Completely disable history for security
-export HISTFILE=/dev/null
+# export HISTFILE=/dev/null
 
 # Google Cloud command line tool settings
-source "$HOME/.gcloud/google-cloud-sdk/path.zsh.inc"
-source "$HOME/.gcloud/google-cloud-sdk/completion.zsh.inc"
+source "$HOME/.gcloud/path.zsh.inc"
+source "$HOME/.gcloud/completion.zsh.inc"
 
-# Personal Binaries
+# Personal Binaries and scripts
 export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.bin/script:$PATH"
+export PATH="$HOME/.bin/go:$PATH"
+
+# Pipsi install
+export PATH="$HOME/.local/bin:$PATH"
 
 # Brew settings
 export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
@@ -50,20 +55,24 @@ export PATH="$HOME/.yarn/bin:$PATH"
 export WORKON_HOME="$HOME/.virtualenvs"
 source /usr/local/bin/virtualenvwrapper.sh
 
-# Syntax highlighting for console input (very slow)
-# source /Users/clement/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # SSH alias for cisco
-alias ssho="ssh -o KexAlgorithms=diffie-hellman-group1-sha1 -o Ciphers=aes256-cbc"
+alias ssho='ssh -o KexAlgorithms=diffie-hellman-group1-sha1 -o Ciphers=aes256-cbc'
+alias sshn='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
+alias ssht='ssh -o "UserKnownHostsFile=/dev/null" -o StrictHostKeyChecking=no'
 
 # Lifehack alias
 alias history="fc -il"
 alias digg="dig +short +noshort"
 alias listport='lsof -i -P | grep -i "listen"'
+alias gdiff='git diff -U0 --word-diff --no-index --'
 alias sshec2="ssh -l ubuntu "
 alias moshec2="mosh --ssh='ssh -l ubuntu'"
 alias encrypt='knife file encrypt -F json --secret-file SOMEWHERE'
 alias decrypt='knife file decrypt -F json --secret-file SOMEWHERE'
+alias getpass="openssl rand -base64 25"
+
+# Better mtr
+alias mtr='sudo mtr -i 0.5 -b -z -e'
 
 # Git alias
 export open="open" # program to open http
@@ -79,9 +88,6 @@ alias gntw='${open} "`gurl`/network/`git rev-parse --abbrev-ref HEAD`"'
 alias gnis='${open} "`gurl`/issues/new"'
 alias gboard='${open} "`gurl`/boards"'
 
-# Capstone import
-export DYLD_LIBRARY_PATH=/usr/local/opt/capstone/lib/:$DYLD_LIBRARY_PATH
-
 # Create urlencode & decode function
 alias urldecode='python -c "import sys, urllib as ul; \
     print ul.unquote_plus(sys.argv[1])"'
@@ -89,12 +95,11 @@ alias urldecode='python -c "import sys, urllib as ul; \
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
 
-# For Check DK
-export PATH=/opt/chefdk/bin:$PATH
-alias workchef='eval "$(chef shell-init bash)"'
-
 # To create temporary container
 alias drun='docker run --rm -i -t'
+
+# To restart tunnelblick
+alias tunnelkill="pkill -9 -f '/Applications/Tunnelblick.app/Contents/MacOS/Tunnelblick'"
 
 # Go related settings
 export GO15VENDOREXPERIMENT=1
@@ -107,7 +112,7 @@ alias gowork='/Documents/go/src'
 gocd () { cd `go list -f '{{.Dir}}' $1` }
 
 # Fix bug between youcompleteme and brew
-export DYLD_FORCE_FLAT_NAMESPACE=1
+#export DYLD_FORCE_FLAT_NAMESPACE=1
 
 # Colorize man page
 man() {
