@@ -45,15 +45,20 @@ export PATH="/opt/vagrant/bin:$PATH"
 disable -r time
 alias time='time -p '
 
-# Kubernete path
+# Kubernete path and completion
 export PATH="$HOME/Documents/kubernetes/platforms/darwin/amd64:$PATH"
+source <(kubectl completion zsh)
 
 # Yarn path
 export PATH="$HOME/.yarn/bin:$PATH"
 
-# Virtualenv path
+# Virtualenv
 export WORKON_HOME="$HOME/.virtualenvs"
 source /usr/local/bin/virtualenvwrapper.sh
+
+# Pyenv and Poetry
+export PATH="$(pyenv root)/shims:$PATH"
+source $HOME/.poetry/env
 
 # SSH alias for cisco
 alias ssho='ssh -o KexAlgorithms=diffie-hellman-group1-sha1 -o Ciphers=aes256-cbc'
@@ -88,6 +93,10 @@ alias gntw='${open} "`gurl`/network/`git rev-parse --abbrev-ref HEAD`"'
 alias gnis='${open} "`gurl`/issues/new"'
 alias gboard='${open} "`gurl`/boards"'
 
+# Create jsonencode & jsondecode function
+alias jsonencode='jq -R . <<<'
+alias jsondecode='jq -r . <<<'
+
 # Create urlencode & decode function
 alias urldecode='python -c "import sys, urllib as ul; \
     print ul.unquote_plus(sys.argv[1])"'
@@ -100,6 +109,9 @@ alias drun='docker run --rm -i -t'
 
 # To restart tunnelblick
 alias tunnelkill="pkill -9 -f '/Applications/Tunnelblick.app/Contents/MacOS/Tunnelblick'"
+
+# To list AWS instances
+alias ec2desc="aws ec2 describe-instances --filter Name=tag-key,Values=Name --query 'Reservations[*].Instances[*].{Name:Tags[?Key==\`Name\`]|[0].Value,Instance:InstanceId,AZ:Placement.AvailabilityZone,PrivateIpAddress:PrivateIpAddress,PublicIpAddress:PublicIpAddress}' --region eu-west-1 --output table"
 
 # Go related settings
 export GO15VENDOREXPERIMENT=1
@@ -129,3 +141,8 @@ man() {
 
 # Import private settings
 source $(dirname ${(%):-%x})/personal-extras.zsh
+
+# Go to Downloads folder instead of home if new shell
+if [[ $SHLVL -eq 1 ]]; then
+  cd ~/Downloads
+fi
