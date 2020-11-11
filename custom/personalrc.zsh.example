@@ -2,147 +2,90 @@
 export EDITOR=vim
 
 # Configure locale
-export LANG=fr_FR.UTF-8
-export LC_ALL=fr_FR.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en_US:en
 
-# Do not share history between terminals
-unsetopt share_history
-
-# Completely disable history for security
-# export HISTFILE=/dev/null
-
-# Google Cloud command line tool settings
-source "$HOME/.gcloud/path.zsh.inc"
-source "$HOME/.gcloud/completion.zsh.inc"
+# Better history
+setopt INC_APPEND_HISTORY
+setopt EXTENDED_HISTORY
+alias history='history -i'
 
 # Personal Binaries and scripts
 export PATH="$HOME/.bin:$PATH"
-export PATH="$HOME/.bin/script:$PATH"
-export PATH="$HOME/.bin/go:$PATH"
 
-# Pipsi install
-export PATH="$HOME/.local/bin:$PATH"
-
-# Brew settings
-export PATH="/usr/local/sbin:/usr/local/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN='TODO'
-export HOMEBREW_NO_ANALYTICS=1
+# Golang settings
+export GOPATH="$HOME/Documents/Repositories/go"
+export PATH="$GOPATH/bin:$PATH"
 
 # Rust settings
 export PATH="$HOME/.cargo/bin:$PATH"
-
-# Java settings
-export JAVA_HOME=$(/usr/libexec/java_home)
 
 # Rbenv settings
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 
-# Vagrant path
-export PATH="/opt/vagrant/bin:$PATH"
+# Pyenv settings
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 
-# Functionnal time command
-disable -r time
-alias time='time -p '
+# Brew settings
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 
-# Kubernete path and completion
-export PATH="$HOME/Documents/kubernetes/platforms/darwin/amd64:$PATH"
-source <(kubectl completion zsh)
-
-# Yarn path
-export PATH="$HOME/.yarn/bin:$PATH"
-
-# Virtualenv
-export WORKON_HOME="$HOME/.virtualenvs"
-source /usr/local/bin/virtualenvwrapper.sh
-
-# Pyenv and Poetry
-export PATH="$(pyenv root)/shims:$PATH"
-source $HOME/.poetry/env
-
-# SSH alias for cisco
+# SSH alias
 alias ssho='ssh -o KexAlgorithms=diffie-hellman-group1-sha1 -o Ciphers=aes256-cbc'
 alias sshn='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
 alias ssht='ssh -o "UserKnownHostsFile=/dev/null" -o StrictHostKeyChecking=no'
 
 # Lifehack alias
-alias history="fc -il"
+alias lll="ls -lrth"
 alias digg="dig +short +noshort"
-alias listport='lsof -i -P | grep -i "listen"'
 alias gdiff='git diff -U0 --word-diff --no-index --'
-alias sshec2="ssh -l ubuntu "
-alias moshec2="mosh --ssh='ssh -l ubuntu'"
-alias encrypt='knife file encrypt -F json --secret-file SOMEWHERE'
-alias decrypt='knife file decrypt -F json --secret-file SOMEWHERE'
+alias open='xdg-open'
+
+# Usefull to generate secrets
 alias getpass="openssl rand -base64 25"
+function random-string() { cat /dev/urandom | base64 | tr -dc 'a-zA-Z0-9' | fold -w ${1:-32} | head -n 1 }
 
 # Better mtr
-alias mtr='sudo mtr -i 0.5 -b -z -e'
-
-# Git alias
-export open="open" # program to open http
-alias gurl="git remote get-url origin | sed 's/git@\(.*\):\(.*\).git/https:\/\/\1\/\2/'"
-alias grepo="git remote get-url origin | sed 's/git@\(.*\):\(.*\).git/\2/'"
-alias gmr='${open} "`gurl`/merge_requests/new?merge_request%5Bsource_branch%5D=`git rev-parse --abbrev-ref HEAD`&merge_request%5Btarget_branch%5D=master"'
-alias gcmp='${open} "`gurl`/compare/master...`git rev-parse --abbrev-ref HEAD`"'
-alias lg='git lg'
-alias gbda='git branch --no-color --merged | command grep -vE "^(\*|\s*(master|develop|dev|prod)\s*$)" | command xargs -n 1 git branch -d'
-alias gclean='gfa && gbda'
-alias glg="git glg"
-alias gntw='${open} "`gurl`/network/`git rev-parse --abbrev-ref HEAD`"'
-alias gnis='${open} "`gurl`/issues/new"'
-alias gboard='${open} "`gurl`/boards"'
+alias mtr='sudo mtr -t -i 0.5 -b -z -e'
 
 # Create jsonencode & jsondecode function
 alias jsonencode='jq -R . <<<'
 alias jsondecode='jq -r . <<<'
 
-# Create urlencode & decode function
-alias urldecode='python -c "import sys, urllib as ul; \
-    print ul.unquote_plus(sys.argv[1])"'
+# Python3 is the new python
+alias python='python3'
 
-alias urlencode='python -c "import sys, urllib as ul; \
-    print ul.quote_plus(sys.argv[1])"'
+# Create urlencode & decode function
+alias urldecode='python -c "import sys; from urllib import parse; \
+    print(parse.unquote_plus(sys.argv[1]))"'
+
+alias urlencode='python -c "import sys; from urllib import parse; \
+    print(parse.quote_plus(sys.argv[1]))"'
 
 # To create temporary container
 alias drun='docker run --rm -i -t'
 
-# To restart tunnelblick
-alias tunnelkill="pkill -9 -f '/Applications/Tunnelblick.app/Contents/MacOS/Tunnelblick'"
-
 # To list AWS instances
 alias ec2desc="aws ec2 describe-instances --filter Name=tag-key,Values=Name --query 'Reservations[*].Instances[*].{Name:Tags[?Key==\`Name\`]|[0].Value,Instance:InstanceId,AZ:Placement.AvailabilityZone,PrivateIpAddress:PrivateIpAddress,PublicIpAddress:PublicIpAddress}' --region eu-west-1 --output table"
-
-# Go related settings
-export GO15VENDOREXPERIMENT=1
-export GOROOT=`go env GOROOT`
-export GOPATH="$HOME/Documents/go"
-export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
-alias gowork='/Documents/go/src'
-
-# To move in go repos quickly
-gocd () { cd `go list -f '{{.Dir}}' $1` }
-
-# Fix bug between youcompleteme and brew
-#export DYLD_FORCE_FLAT_NAMESPACE=1
-
-# Colorize man page
-man() {
-    env \
-        LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-        LESS_TERMCAP_md=$(printf "\e[1;31m") \
-        LESS_TERMCAP_me=$(printf "\e[0m") \
-        LESS_TERMCAP_se=$(printf "\e[0m") \
-        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-        LESS_TERMCAP_ue=$(printf "\e[0m") \
-        LESS_TERMCAP_us=$(printf "\e[1;32m") \
-        man "$@"
-}
 
 # Import private settings
 source $(dirname ${(%):-%x})/personal-extras.zsh
 
 # Go to Downloads folder instead of home if new shell
 if [[ $SHLVL -eq 1 ]]; then
-  cd ~/Downloads
+  cd ~/Téléchargements/
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Configure gam
+export GIT_DISCOVERY_ACROSS_FILESYSTEM=1
+function gam() { "/home/clement/.bin/gam/gam" "$@" ; }
+
+# Necessary for tilix terminal
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte.sh
 fi
